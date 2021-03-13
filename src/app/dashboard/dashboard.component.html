@@ -1,8 +1,8 @@
-<form [formGroup]="segmentForm" class="example-form" (ngSubmit)="onSubmit()">
+<form [formGroup]="segmentForm" class="example-form" (ngSubmit)="onSegmentFormSubmit()">
   <mat-card class="example-card">
-    <!-- <mat-card-header>
-      <mat-card-title>Segment</mat-card-title>
-    </mat-card-header> -->
+    <mat-card-header>
+      <mat-card-title>Segment Video</mat-card-title>
+    </mat-card-header>
 
     <mat-card-content>
 
@@ -29,26 +29,26 @@
 
       <!-- Range Duration - Block Start -->
       <ng-container *ngIf="segmentForm.controls.segment_settings.value === 'Range Duration'">
-        <button class="add-range-duration" type="button" mat-flat-button color="accent" (click)="onInsertRange(i)">ADD RANGE DURATION</button>
+        <button class="add-range-duration" type="button" mat-flat-button color="accent" (click)="onAddRangeDuration(i)">ADD RANGE DURATION</button>
         <br>
         <br>
         <table class="example-full-width" cellspacing="0">
-          <ng-container *ngFor="let range of segmentForm.controls['range_duration'].controls; let i = index;">
+          <ng-container *ngFor="let range of segmentForm.controls['interval_range'].controls; let i = index;">
             <tr [formGroup]="range">
               <td>
                 <mat-form-field class="example-full-width">
                   <mat-label>Range Duration Start</mat-label>
-                  <input [ngClass]="'range-duration-start-' + (i + 1)" matInput placeholder="Range Duration Start" formControlName="start">
+                  <input type="number" [ngClass]="'range-duration-start-' + (i + 1)" matInput placeholder="Range Duration Start" formControlName="start">
                 </mat-form-field>
               </td>
               <td>
                 <mat-form-field class="example-full-width">
                   <mat-label>Range Duration End</mat-label>
-                  <input [ngClass]="'range-duration-end-' + (i + 1)" matInput placeholder="Range Duration End" formControlName="end">
+                  <input type="number" [ngClass]="'range-duration-end-' + (i + 1)" matInput placeholder="Range Duration End" formControlName="end">
                 </mat-form-field>
               </td>
               <td>
-                <button [ngClass]="'delete-range-duration-' + (i + 1)" type="button" mat-flat-button color="accent" (click)="onDeleteRange(i)">DELETE</button>
+                <button [ngClass]="'delete-range-duration-' + (i + 1)" type="button" mat-flat-button color="accent" (click)="onDeleteRangeDuration(i)">DELETE</button>
               </td>
             </tr>
           </ng-container>
@@ -59,7 +59,7 @@
       <!-- Number of Segments - Block Start -->
       <mat-form-field class="example-full-width" *ngIf="segmentForm.controls.segment_settings.value === 'Number of Segments'">
         <mat-label>Number of Segments...</mat-label>
-        <input class="num-segments" matInput placeholder="Number of Segments" formControlName="no_of_segments">
+        <input class="num-segments" type="number" matInput placeholder="Number of Segments" formControlName="no_of_segments">
       </mat-form-field>
       <!-- Number of Segments - Block End -->
 
@@ -67,6 +67,66 @@
 
     <mat-card-actions>
       <button class="process-video" type="submit" mat-flat-button color="accent" [disabled]="segmentForm.invalid">SEGMENT VIDEO</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+<!-- ------------------ -->
+<hr>
+<!-- ------------------ -->
+
+<form [formGroup]="combineForm" class="example-form" (ngSubmit)="onCombineFormSubmit()">
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>Combine Video</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+
+      <button class="add-video" type="button" mat-flat-button color="accent" (click)="onAddVideo()">ADD RANGE DURATION</button>
+      <br>
+      <br>
+      <table class="example-full-width" cellspacing="0">
+        <ng-container *ngFor="let segment of combineForm.controls['segments'].controls; let i = index;">
+          <tr [formGroup]="segment">
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Video Link...</mat-label>
+                <input type="text" [ngClass]="'combine-video-' + (i + 1)" matInput color="accent" placeholder="Video Link..." formControlName="video_url">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Range Duration Start</mat-label>
+                <input type="number" [ngClass]="'combine-video-range-duration-start-' + (i + 1)" matInput placeholder="Range Duration Start" formControlName="start">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Range Duration End</mat-label>
+                <input type="number" [ngClass]="'combine-video-range-duration-end-' + (i + 1)" matInput placeholder="Range Duration End" formControlName="end">
+              </mat-form-field>
+            </td>
+            <td>
+              <button [ngClass]="'delete-combine-video-range-duration-' + (i + 1)" type="button" mat-flat-button color="accent" (click)="onDeleteVideo(i)">DELETE</button>
+            </td>
+          </tr>
+        </ng-container>
+      </table>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Video Height...</mat-label>
+        <input type="number" class="video-height" matInput placeholder="Video Height" formControlName="height">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Video Width...</mat-label>
+        <input type="number" class="video-width" matInput placeholder="Video Width" formControlName="width">
+      </mat-form-field>
+
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button class="combine-video" type="submit" mat-flat-button color="accent" [disabled]="combineForm.invalid">COMBINE VIDEO(S)</button>
     </mat-card-actions>
   </mat-card>
 </form>
