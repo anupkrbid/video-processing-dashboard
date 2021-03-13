@@ -1,0 +1,72 @@
+<form [formGroup]="segmentForm" class="example-form" (ngSubmit)="onSubmit()">
+  <mat-card class="example-card">
+    <!-- <mat-card-header>
+      <mat-card-title>Segment</mat-card-title>
+    </mat-card-header> -->
+
+    <mat-card-content>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Video Link...</mat-label>
+        <input class="video-link" formControlName="video_link" color="accent" matInput placeholder="Video URL">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="example-full-width">
+        <mat-label>Select Segment Settings...</mat-label>
+        <mat-select class="segment-setting" formControlName="segment_settings">
+          <mat-option *ngFor="let setting of settings" [value]="setting.value">
+            {{ setting.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Interval Duration - Block Start -->
+      <mat-form-field class="example-full-width" *ngIf="segmentForm.controls.segment_settings.value === 'Interval Duration'">
+        <mat-label>Interval Duration (in seconds)...</mat-label>
+        <input class="interval-duration" formControlName="interval_duration" color="accent" matInput placeholder="Interval Duration" type="number" step="1">
+      </mat-form-field>
+      <!-- Interval Duration - Block End -->
+
+      <!-- Range Duration - Block Start -->
+      <ng-container *ngIf="segmentForm.controls.segment_settings.value === 'Range Duration'">
+        <button class="add-range-duration" type="button" mat-flat-button color="accent" (click)="onInsertRange(i)">ADD RANGE DURATION</button>
+        <br>
+        <br>
+        <table class="example-full-width" cellspacing="0">
+          <ng-container *ngFor="let range of segmentForm.controls['range_duration'].controls; let i = index;">
+            <tr [formGroup]="range">
+              <td>
+                <mat-form-field class="example-full-width">
+                  <mat-label>Range Duration Start</mat-label>
+                  <input [ngClass]="'range-duration-start-' + (i + 1)" matInput placeholder="Range Duration Start" formControlName="start">
+                </mat-form-field>
+              </td>
+              <td>
+                <mat-form-field class="example-full-width">
+                  <mat-label>Range Duration End</mat-label>
+                  <input [ngClass]="'range-duration-end-' + (i + 1)" matInput placeholder="Range Duration End" formControlName="end">
+                </mat-form-field>
+              </td>
+              <td>
+                <button [ngClass]="'delete-range-duration-' + (i + 1)" type="button" mat-flat-button color="accent" (click)="onDeleteRange(i)">DELETE</button>
+              </td>
+            </tr>
+          </ng-container>
+        </table>
+      </ng-container>
+      <!-- Range Duration - Block Start -->
+
+      <!-- Number of Segments - Block Start -->
+      <mat-form-field class="example-full-width" *ngIf="segmentForm.controls.segment_settings.value === 'Number of Segments'">
+        <mat-label>Number of Segments...</mat-label>
+        <input class="num-segments" matInput placeholder="Number of Segments" formControlName="no_of_segments">
+      </mat-form-field>
+      <!-- Number of Segments - Block End -->
+
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button class="process-video" type="submit" mat-flat-button color="accent" [disabled]="segmentForm.invalid">SEGMENT VIDEO</button>
+    </mat-card-actions>
+  </mat-card>
+</form>
