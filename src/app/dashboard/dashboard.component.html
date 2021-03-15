@@ -1,3 +1,4 @@
+<pre>https://codejudge-question-artifacts.s3.ap-south-1.amazonaws.com/q-94/big_buck_bunny_720p_2mb.mp4</pre>
 <form [formGroup]="segmentForm" class="example-form" (ngSubmit)="onSegmentFormSubmit()">
   <mat-card class="example-card">
     <mat-card-header>
@@ -13,7 +14,7 @@
 
       <mat-form-field appearance="fill" class="example-full-width">
         <mat-label>Select Segment Settings...</mat-label>
-        <mat-select class="segment-setting" formControlName="segment_settings">
+        <mat-select class="segment-setting" formControlName="segment_settings" (selectionChange)="onSegmentSettingChanged()">
           <mat-option *ngFor="let setting of settings" [value]="setting.value">
             {{ setting.viewValue }}
           </mat-option>
@@ -23,7 +24,7 @@
       <!-- Interval Duration - Block Start -->
       <mat-form-field class="example-full-width" *ngIf="segmentForm.controls.segment_settings.value === 'Interval Duration'">
         <mat-label>Interval Duration (in seconds)...</mat-label>
-        <input class="interval-duration" formControlName="interval_duration" color="accent" matInput placeholder="Interval Duration" type="number" step="1">
+        <input class="interval-duration" formControlName="interval_duration" matInput placeholder="Interval Duration" type="number" step="1">
       </mat-form-field>
       <!-- Interval Duration - Block End -->
 
@@ -33,18 +34,18 @@
         <br>
         <br>
         <table class="example-full-width" cellspacing="0">
-          <ng-container *ngFor="let range of segmentForm.controls['interval_range'].controls; let i = index;">
-            <tr [formGroup]="range">
+          <ng-container >
+            <tr [formGroup]="range" *ngFor="let range of segmentForm.controls['interval_range'].controls; let i = index;">
               <td>
                 <mat-form-field class="example-full-width">
                   <mat-label>Range Duration Start</mat-label>
-                  <input type="number" [ngClass]="'range-duration-start-' + (i + 1)" matInput placeholder="Range Duration Start" formControlName="start">
+                  <input type="number" [ngClass]="'range-duration-start-' + (i + 1)" matInput placeholder="Range Duration Start" formControlName="start" step="1">
                 </mat-form-field>
               </td>
               <td>
                 <mat-form-field class="example-full-width">
                   <mat-label>Range Duration End</mat-label>
-                  <input type="number" [ngClass]="'range-duration-end-' + (i + 1)" matInput placeholder="Range Duration End" formControlName="end">
+                  <input type="number" [ngClass]="'range-duration-end-' + (i + 1)" matInput placeholder="Range Duration End" formControlName="end" step="1">
                 </mat-form-field>
               </td>
               <td>
@@ -59,7 +60,7 @@
       <!-- Number of Segments - Block Start -->
       <mat-form-field class="example-full-width" *ngIf="segmentForm.controls.segment_settings.value === 'Number of Segments'">
         <mat-label>Number of Segments...</mat-label>
-        <input class="num-segments" type="number" matInput placeholder="Number of Segments" formControlName="no_of_segments">
+        <input class="num-segments" type="number" matInput placeholder="Number of Segments" formControlName="no_of_segments" step="1">
       </mat-form-field>
       <!-- Number of Segments - Block End -->
 
@@ -111,9 +112,23 @@
             </td>
           </tr>
         </ng-container>
+        <tr>
+          <td>
+            <mat-form-field class="example-full-width">
+              <mat-label>Video Height...</mat-label>
+              <input type="number" class="video-height" matInput placeholder="Video Height" formControlName="height">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="example-full-width">
+              <mat-label>Video Width...</mat-label>
+              <input type="number" class="video-width" matInput placeholder="Video Width" formControlName="width">
+            </mat-form-field>
+          </td>
+        </tr>
       </table>
 
-      <mat-form-field class="example-full-width">
+      <!-- <mat-form-field class="example-full-width">
         <mat-label>Video Height...</mat-label>
         <input type="number" class="video-height" matInput placeholder="Video Height" formControlName="height">
       </mat-form-field>
@@ -121,7 +136,7 @@
       <mat-form-field class="example-full-width">
         <mat-label>Video Width...</mat-label>
         <input type="number" class="video-width" matInput placeholder="Video Width" formControlName="width">
-      </mat-form-field>
+      </mat-form-field> -->
 
     </mat-card-content>
 
