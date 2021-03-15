@@ -72,7 +72,7 @@
   </mat-card>
 </form>
 <!-- ------------------ -->
-<hr>
+<br><br>
 <!-- ------------------ -->
 
 <form [formGroup]="combineForm" class="example-form" (ngSubmit)="onCombineFormSubmit()">
@@ -145,3 +145,14 @@
     </mat-card-actions>
   </mat-card>
 </form>
+
+
+<video [ngClass]="'segmented-video-' + (i + 1)" width="320" height="240" controls *ngFor="let video of segmentedVideoResult; index as i;" >
+  <source [ngClass]="'segmented-video-source-' + (i + 1)" [src]="video.video_url" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+<video class="combined-video" width="320" height="240" controls *ngFor="let video of combinedVideoResult" >
+  <source class="combined-video-source" [src]="video.video_url" type="video/mp4">
+  Your browser does not support the video tag.
+</video>

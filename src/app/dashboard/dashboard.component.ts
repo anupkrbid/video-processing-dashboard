@@ -10,6 +10,8 @@ import { DashboardService } from './dashboard.service';
   styleUrls: ["./dashboard.component.css"],
 })
 export class DashboardComponent implements OnInit {
+  segmentedVideoResult = [];
+  combinedVideoResult = [];
   segmentForm: FormGroup;
   combineForm: FormGroup;
   settings: any[] = [
@@ -31,7 +33,7 @@ export class DashboardComponent implements OnInit {
     this.combineForm = this.fb.group({
       width: [null, [Validators.required, Validators.min(1)]],
       height: [null, [Validators.required, Validators.min(1)]],
-      segments: this.fb.array([], [this.sizeValidatorFn()])
+      segments: this.fb.array([], [this.sizeValidatorFn(), this.rangeValidatorFn('start', 'end')])
     });
   }
 
@@ -51,7 +53,7 @@ export class DashboardComponent implements OnInit {
         this.segmentForm = this.fb.group({
           video_link: [segmentFormValue.video_link, [Validators.required, Validators.pattern(this.urlRegex)]],
           segment_settings: [segmentFormValue.segment_settings, [Validators.required]],
-          interval_range: this.fb.array([], [this.sizeValidatorFn()])
+          interval_range: this.fb.array([], [this.sizeValidatorFn(), this.rangeValidatorFn('start', 'end')])
         }); //  can add { updateOn:'blur' } as 2nd param to this.fb.group for added features
         break;
       }
@@ -77,24 +79,33 @@ export class DashboardComponent implements OnInit {
   }
 
   rangeValidatorFn(smallerControlName: string, biggerControlName: string): ValidatorFn {
-    return function (control: AbstractControl): ValidationErrors | null {
+    return function (array: FormArray): ValidationErrors | null {
       console.log('rangeValidatorFn Fired');
-      const smallerNo = control.get(smallerControlName).value;
-      const biggerNo = control.get(biggerControlName).value;
-      console.log(smallerNo, biggerNo);
-      return smallerNo < biggerNo ? null : {
+      const invalidGroups = array.value.filter(group => {
+        if (!group[smallerControlName] || !group[biggerControlName]) {
+          return true;
+        }
+        if (group[smallerControlName] >= group[biggerControlName]) {
+          return true;
+        }
+        return false;
+      });
+
+      return invalidGroups.length === 0 ? null : {
         invalidRange: true
       };
     }
   }
 
   onSegmentFormSubmit() {
+    this.segmentedVideoResult = [];
     console.log(this.segmentForm.value);
     this.dashboardService
       .processSegmentVideo(this.segmentForm.value, this.segmentForm.value.segment_settings)
       .pipe(take(1))
       .subscribe(
         (res) => {
+          this.segmentedVideoResult = res;
           console.log(res);
         },
         (err) => {
@@ -107,8 +118,8 @@ export class DashboardComponent implements OnInit {
     const intervalRangeFormArray = <FormArray>(this.segmentForm.controls["interval_range"]);
     const intervalRangeFormGroup = this.fb.group({
       start: [null, [Validators.required, Validators.min(1)]],
-      end: [null, [Validators.required, Validators.min(2)]]
-    }, [this.rangeValidatorFn('start', 'end')]);
+      end: [null, [Validators.required]]
+    });
 
     intervalRangeFormArray.insert(intervalRangeFormArray.length, intervalRangeFormGroup);
   }
@@ -123,8 +134,8 @@ export class DashboardComponent implements OnInit {
     const segmentsFormGroup = this.fb.group({
       video_url: [null, [Validators.required, Validators.pattern(this.urlRegex)]],
       start: [null, [Validators.required, Validators.min(1)]],
-      end: [null, [Validators.required, Validators.min(2)]]
-    }, [this.rangeValidatorFn('start', 'end')]);
+      end: [null, [Validators.required]]
+    });
 
     segmentsFormArray.insert(segmentsFormArray.length, segmentsFormGroup);
   }
@@ -135,12 +146,14 @@ export class DashboardComponent implements OnInit {
   }
 
   onCombineFormSubmit() {
+    this.combinedVideoResult = [];
     console.log(this.combineForm.value);
     this.dashboardService
       .processCombineVideo(this.combineForm.value)
       .pipe(take(1))
       .subscribe(
         (res) => {
+          this.combinedVideoResult = [res];
           console.log(res);
         },
         (err) => {

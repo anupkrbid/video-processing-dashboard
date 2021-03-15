@@ -13,8 +13,8 @@ export class DashboardService {
   constructor(private httpClient: HttpClient) { }
 
   processSegmentVideo(payload: any, segmentSetting: string): Observable<any> {
-    let apiUrl = environment.apiUrl; // http://34.207.187.243:4000
-    // let apiUrl = 'http://34.207.187.243:4000';
+    // let apiUrl = environment.apiUrl; // http://3.80.98.122:4001
+    let apiUrl = 'http://3.80.98.122:4001';
     switch (segmentSetting) {
       case 'Interval Duration': {
         apiUrl += '/api/process-interval';
@@ -43,8 +43,8 @@ export class DashboardService {
   }
 
   processCombineVideo(payload: any): Observable<any> {
-    // let apiUrl = environment.apiUrl + ' /api/combine-video'; // http://34.207.187.243:4000
-    let apiUrl = 'http://34.207.187.243:4000/api/combine-video';
+    // let apiUrl = environment.apiUrl + ' /api/combine-video'; // http://3.80.98.122:4001
+    let apiUrl = 'http://3.80.98.122:4001/api/combine-video';
     // {"video_url":"https://cj-video-test.s3.amazonaws.com/CJ-Video-Test-afd21b18-841f-11eb-8d32-0242ac110004video-proces-f.mp4"}
     return this.httpClient.post(apiUrl, payload);
   }
