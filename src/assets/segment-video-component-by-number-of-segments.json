@@ -1,0 +1,13 @@
+{
+  "interval_videos": [
+    {
+      "video_url": "https://cj-video-test.s3.amazonaws.com/CJ-Video-Test-95975ca2-8417-11eb-8bec-0242ac110004video-proces-0.mp4"
+    },
+    {
+      "video_url": "https://cj-video-test.s3.amazonaws.com/CJ-Video-Test-97a0641c-8417-11eb-8bec-0242ac110004video-proces-1.mp4"
+    },
+    {
+      "video_url": "https://cj-video-test.s3.amazonaws.com/CJ-Video-Test-9934351a-8417-11eb-8bec-0242ac110004video-proces-2.mp4"
+    }
+  ]
+}

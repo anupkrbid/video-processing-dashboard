@@ -1,0 +1,18 @@
+  // can be called after form creation to set a event listener on changes and change vallidation / note: this is not ngOnChanges
+  // onChanges() {
+  //   this.recipeForm.get('category').valueChanges.subscribe(val => {
+  //     const subCategoryControl = this.recipeForm.get('subcategory');
+  //     if (val) {
+  //       //update our validators
+  //       subCategoryControl.setValidators(Validators.required);
+  //       //update formControl validity based on new validators
+  //       subCategoryControl.updateValueAndValidity();
+  //     }
+  //     else {
+  //       //remove validators cause we don't want them if no category val
+  //       subCategoryControl.setValidators(null);
+  //       //update formControl validity based on new validators
+  //       //in case they were marked as invalid from previously
+  //       subCategoryControl.updateValueAndValidity();
+  //     }
+  //   });

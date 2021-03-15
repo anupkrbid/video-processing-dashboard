@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
 
+import { CustomValidator } from '../shared/custom.validator';
 import { DashboardService } from './dashboard.service';
 
 @Component({
@@ -33,8 +34,10 @@ export class DashboardComponent implements OnInit {
     this.combineForm = this.fb.group({
       width: [null, [Validators.required, Validators.min(1)]],
       height: [null, [Validators.required, Validators.min(1)]],
-      segments: this.fb.array([], [this.sizeValidatorFn(), this.rangeValidatorFn('start', 'end')])
+      segments: this.fb.array([], [CustomValidator.sizeValidatorFn(), CustomValidator.rangeValidatorFn('start', 'end')])
     });
+
+    console.log('Sample URL => https://codejudge-question-artifacts.s3.ap-south-1.amazonaws.com/q-94/big_buck_bunny_720p_2mb.mp4');
   }
 
   onSegmentSettingChanged() {
@@ -53,7 +56,7 @@ export class DashboardComponent implements OnInit {
         this.segmentForm = this.fb.group({
           video_link: [segmentFormValue.video_link, [Validators.required, Validators.pattern(this.urlRegex)]],
           segment_settings: [segmentFormValue.segment_settings, [Validators.required]],
-          interval_range: this.fb.array([], [this.sizeValidatorFn(), this.rangeValidatorFn('start', 'end')])
+          interval_range: this.fb.array([], [CustomValidator.sizeValidatorFn(), CustomValidator.rangeValidatorFn('start', 'end')])
         }); //  can add { updateOn:'blur' } as 2nd param to this.fb.group for added features
         break;
       }
@@ -67,34 +70,6 @@ export class DashboardComponent implements OnInit {
       }
     }
     this.segmentForm.updateValueAndValidity();
-  }
-
-  sizeValidatorFn(): ValidatorFn  {
-    return function (array: FormArray): { [key: string]: any } | null {
-      console.log('sizeValidatorFn Fired');
-      return array.length > 0 ? null : {
-        invalidSize: true
-      };
-    }
-  }
-
-  rangeValidatorFn(smallerControlName: string, biggerControlName: string): ValidatorFn {
-    return function (array: FormArray): ValidationErrors | null {
-      console.log('rangeValidatorFn Fired');
-      const invalidGroups = array.value.filter(group => {
-        if (!group[smallerControlName] || !group[biggerControlName]) {
-          return true;
-        }
-        if (group[smallerControlName] >= group[biggerControlName]) {
-          return true;
-        }
-        return false;
-      });
-
-      return invalidGroups.length === 0 ? null : {
-        invalidRange: true
-      };
-    }
   }
 
   onSegmentFormSubmit() {
@@ -117,7 +92,7 @@ export class DashboardComponent implements OnInit {
   onAddRangeDuration() {
     const intervalRangeFormArray = <FormArray>(this.segmentForm.controls["interval_range"]);
     const intervalRangeFormGroup = this.fb.group({
-      start: [null, [Validators.required, Validators.min(1)]],
+      start: [null, [Validators.required, Validators.min(0)]],
       end: [null, [Validators.required]]
     });
 
@@ -133,7 +108,7 @@ export class DashboardComponent implements OnInit {
     const segmentsFormArray = <FormArray>(this.combineForm.controls["segments"]);
     const segmentsFormGroup = this.fb.group({
       video_url: [null, [Validators.required, Validators.pattern(this.urlRegex)]],
-      start: [null, [Validators.required, Validators.min(1)]],
+      start: [null, [Validators.required, Validators.min(0)]],
       end: [null, [Validators.required]]
     });
 
@@ -161,23 +136,4 @@ export class DashboardComponent implements OnInit {
         }
       );
   }
-
-  // can be called after form creation to set a event listener on changes and change vallidation / note: this is not ngOnChanges
-  // onChanges() {
-  //   this.recipeForm.get('category').valueChanges.subscribe(val => {
-  //     const subCategoryControl = this.recipeForm.get('subcategory');
-  //     if (val) {
-  //       //update our validators
-  //       subCategoryControl.setValidators(Validators.required);
-  //       //update formControl validity based on new validators
-  //       subCategoryControl.updateValueAndValidity();
-  //     }
-  //     else {
-  //       //remove validators cause we don't want them if no category val
-  //       subCategoryControl.setValidators(null);
-  //       //update formControl validity based on new validators
-  //       //in case they were marked as invalid from previously
-  //       subCategoryControl.updateValueAndValidity();
-  //     }
-  //   });
 }

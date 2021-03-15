@@ -1,0 +1,14 @@
+{
+  "interval_videos": [
+    {
+      "video_url": "https://cj-video-test.s3.amazonaws.com/video-proces-0.mp4"
+    },
+    {
+      "video_url": "https://cj-video-test.s3.amazonaws.com/video-proces-1.mp4"
+    },
+    {
+      "video_url": "https://cj-video-test.s3.amazonaws.com/video-proces-2.mp4"
+    },
+    { "video_url": "https://cj-video-test.s3.amazonaws.com/video-proces-3.mp4" }
+  ]
+}
