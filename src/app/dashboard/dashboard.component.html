@@ -1,145 +1,146 @@
-<form [formGroup]="segmentForm" class="example-form" (ngSubmit)="onSegmentFormSubmit()">
-  <mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-title>Segment Video</mat-card-title>
-    </mat-card-header>
+<main class="h-100">
+  <section class="container pt-3">
 
-    <mat-card-content>
+    <!-- Segment Form - Start -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Segment Video</h5>
+        <form class="w-100" [formGroup]="segmentForm" (ngSubmit)="onSegmentFormSubmit()">
 
-      <mat-form-field class="example-full-width">
-        <mat-label>Video Link...</mat-label>
-        <input class="video-link" formControlName="video_link" color="accent" matInput placeholder="Video URL">
-      </mat-form-field>
+          <mat-form-field class="w-100">
+            <mat-label>Video Link...</mat-label>
+            <input class="video-link" formControlName="video_link" color="accent" matInput placeholder="Video URL">
+          </mat-form-field>
 
-      <div class="form-group">
-        <label for="segment-setting">Select Segment Settings...</label>
-        <select class="form-control segment-setting" id="segment-setting" formControlName="segment_settings" (change)="onSegmentSettingChanged()">
-          <option *ngFor="let setting of settings" [value]="setting.value">{{ setting.viewValue }}</option>
-        </select>
-      </div>
+          <div class="form-group">
+            <label for="segment-setting">Select Segment Settings...</label>
+            <select class="form-control segment-setting" id="segment-setting" formControlName="segment_settings" (change)="onSegmentSettingChanged()">
+              <option *ngFor="let setting of settings" [value]="setting.value">{{ setting.viewValue }}</option>
+            </select>
+          </div>
 
-      <!-- Interval Duration - Block Start -->
-      <mat-form-field class="example-full-width" *ngIf="segmentForm.controls.segment_settings.value === 'Interval Duration'">
-        <mat-label>Interval Duration (in seconds)...</mat-label>
-        <input class="interval-duration" formControlName="interval_duration" matInput placeholder="Interval Duration" type="number" step="1">
-      </mat-form-field>
-      <!-- Interval Duration - Block End -->
+          <!-- Interval Duration - Block Start -->
+          <mat-form-field class="w-100" *ngIf="segmentForm.controls.segment_settings.value === 'Interval Duration'">
+            <mat-label>Interval Duration (in seconds)...</mat-label>
+            <input class="interval-duration" formControlName="interval_duration" matInput placeholder="Interval Duration" type="number" step="1">
+          </mat-form-field>
+          <!-- Interval Duration - Block End -->
 
-      <!-- Range Duration - Block Start -->
-      <ng-container *ngIf="segmentForm.controls.segment_settings.value === 'Range Duration'">
-        <button class="add-range-duration" type="button" mat-flat-button color="accent" (click)="onAddRangeDuration()">ADD RANGE DURATION</button>
-        <br>
-        <br>
-        <table class="example-full-width" cellspacing="0">
-          <ng-container >
-            <tr [formGroup]="range" *ngFor="let range of segmentForm.get('interval_range')['controls']; let i = index;">
-              <td>
-                <mat-form-field class="example-full-width">
-                  <mat-label>Range Duration Start</mat-label>
-                  <input type="number" [ngClass]="'range-duration-start-' + (i + 1)" matInput placeholder="Range Duration Start" formControlName="start" step="1">
-                </mat-form-field>
-              </td>
-              <td>
-                <mat-form-field class="example-full-width">
-                  <mat-label>Range Duration End</mat-label>
-                  <input type="number" [ngClass]="'range-duration-end-' + (i + 1)" matInput placeholder="Range Duration End" formControlName="end" step="1">
-                </mat-form-field>
-              </td>
-              <td>
-                <button [ngClass]="'delete-range-duration-' + (i + 1)" type="button" mat-flat-button color="accent" (click)="onDeleteRangeDuration(i)">DELETE</button>
-              </td>
-            </tr>
+          <!-- Range Duration - Block Start -->
+          <ng-container *ngIf="segmentForm.controls.segment_settings.value === 'Range Duration'">
+            <button class="add-range-duration" type="button" mat-flat-button color="accent" (click)="onAddRangeDuration()">ADD RANGE DURATION</button>
+            <br>
+            <br>
+            <table class="w-100" cellspacing="0">
+              <ng-container >
+                <tr [formGroup]="range" *ngFor="let range of segmentForm.get('interval_range')['controls']; let i = index;">
+                  <td>
+                    <mat-form-field class="w-100">
+                      <mat-label>Range Duration Start</mat-label>
+                      <input type="number" [ngClass]="'range-duration-start-' + (i + 1)" matInput placeholder="Range Duration Start" formControlName="start" step="1">
+                    </mat-form-field>
+                  </td>
+                  <td>
+                    <mat-form-field class="w-100">
+                      <mat-label>Range Duration End</mat-label>
+                      <input type="number" [ngClass]="'range-duration-end-' + (i + 1)" matInput placeholder="Range Duration End" formControlName="end" step="1">
+                    </mat-form-field>
+                  </td>
+                  <td class="text-right">
+                    <button [ngClass]="'delete-range-duration-' + (i + 1)" type="button" mat-flat-button color="accent" (click)="onDeleteRangeDuration(i)">DELETE</button>
+                  </td>
+                </tr>
+              </ng-container>
+            </table>
           </ng-container>
-        </table>
-      </ng-container>
-      <!-- Range Duration - Block Start -->
+          <!-- Range Duration - Block Start -->
 
-      <!-- Number of Segments - Block Start -->
-      <mat-form-field class="example-full-width" *ngIf="segmentForm.controls.segment_settings.value === 'Number of Segments'">
-        <mat-label>Number of Segments...</mat-label>
-        <input class="num-segments" type="number" matInput placeholder="Number of Segments" formControlName="no_of_segments" step="1">
-      </mat-form-field>
-      <!-- Number of Segments - Block End -->
+          <!-- Number of Segments - Block Start -->
+          <mat-form-field class="w-100" *ngIf="segmentForm.controls.segment_settings.value === 'Number of Segments'">
+            <mat-label>Number of Segments...</mat-label>
+            <input class="num-segments" type="number" matInput placeholder="Number of Segments" formControlName="no_of_segments" step="1">
+          </mat-form-field>
+          <!-- Number of Segments - Block End -->
 
-    </mat-card-content>
+          <button class="process-video" type="submit" mat-flat-button color="accent" [disabled]="segmentForm.invalid">SEGMENT VIDEO</button>
 
-    <mat-card-actions>
-      <button class="process-video" type="submit" mat-flat-button color="accent" [disabled]="segmentForm.invalid">SEGMENT VIDEO</button>
-    </mat-card-actions>
-  </mat-card>
-</form>
-<!-- ------------------ -->
-<br><br>
-<!-- ------------------ -->
+        </form>
+      </div>
+    </div>
+    <!-- Segment Form - End -->
 
-<form [formGroup]="combineForm" class="example-form" (ngSubmit)="onCombineFormSubmit()">
-  <mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-title>Combine Video</mat-card-title>
-    </mat-card-header>
+    <br>
 
-    <mat-card-content>
+    <!-- Combine Form - Start -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Combine Video</h5>
+        <form class="w-100" [formGroup]="combineForm" (ngSubmit)="onCombineFormSubmit()">
+          <button class="add-video" type="button" mat-flat-button color="accent" (click)="onAddVideo()">ADD RANGE DURATION</button>
+              <br>
+              <br>
+              <table class="w-100" cellspacing="0">
+                <ng-container *ngFor="let segment of combineForm.get('segments')['controls']; let i = index;">
+                  <tr [formGroup]="segment">
+                    <td>
+                      <mat-form-field class="w-100">
+                        <mat-label>Video Link...</mat-label>
+                        <input type="text" [ngClass]="'combine-video-' + (i + 1)" matInput color="accent" placeholder="Video Link..." formControlName="video_url">
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field class="w-100">
+                        <mat-label>Range Duration Start</mat-label>
+                        <input type="number" [ngClass]="'combine-video-range-duration-start-' + (i + 1)" matInput placeholder="Range Duration Start" formControlName="start">
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field class="w-100">
+                        <mat-label>Range Duration End</mat-label>
+                        <input type="number" [ngClass]="'combine-video-range-duration-end-' + (i + 1)" matInput placeholder="Range Duration End" formControlName="end">
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <button [ngClass]="'delete-combine-video-range-duration-' + (i + 1)" type="button" mat-flat-button color="accent" (click)="onDeleteVideo(i)">DELETE</button>
+                    </td>
+                  </tr>
+                </ng-container>
+                <!-- Height Width -->
+                <tr>
+                  <td>
+                    <mat-form-field class="w-100">
+                      <mat-label>Video Height...</mat-label>
+                      <input type="number" class="video-height" matInput placeholder="Video Height" formControlName="height">
+                    </mat-form-field>
+                  </td>
+                  <td>
+                    <mat-form-field class="w-100">
+                      <mat-label>Video Width...</mat-label>
+                      <input type="number" class="video-width" matInput placeholder="Video Width" formControlName="width">
+                    </mat-form-field>
+                  </td>
+                </tr>
+              </table>
 
-      <button class="add-video" type="button" mat-flat-button color="accent" (click)="onAddVideo()">ADD RANGE DURATION</button>
-      <br>
-      <br>
-      <table class="example-full-width" cellspacing="0">
-        <ng-container *ngFor="let segment of combineForm.get('segments')['controls']; let i = index;">
-          <tr [formGroup]="segment">
-            <td>
-              <mat-form-field class="example-full-width">
-                <mat-label>Video Link...</mat-label>
-                <input type="text" [ngClass]="'combine-video-' + (i + 1)" matInput color="accent" placeholder="Video Link..." formControlName="video_url">
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="example-full-width">
-                <mat-label>Range Duration Start</mat-label>
-                <input type="number" [ngClass]="'combine-video-range-duration-start-' + (i + 1)" matInput placeholder="Range Duration Start" formControlName="start">
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field class="example-full-width">
-                <mat-label>Range Duration End</mat-label>
-                <input type="number" [ngClass]="'combine-video-range-duration-end-' + (i + 1)" matInput placeholder="Range Duration End" formControlName="end">
-              </mat-form-field>
-            </td>
-            <td>
-              <button [ngClass]="'delete-combine-video-range-duration-' + (i + 1)" type="button" mat-flat-button color="accent" (click)="onDeleteVideo(i)">DELETE</button>
-            </td>
-          </tr>
-        </ng-container>
-        <!-- Height Width -->
-        <tr>
-          <td>
-            <mat-form-field class="example-full-width">
-              <mat-label>Video Height...</mat-label>
-              <input type="number" class="video-height" matInput placeholder="Video Height" formControlName="height">
-            </mat-form-field>
-          </td>
-          <td>
-            <mat-form-field class="example-full-width">
-              <mat-label>Video Width...</mat-label>
-              <input type="number" class="video-width" matInput placeholder="Video Width" formControlName="width">
-            </mat-form-field>
-          </td>
-        </tr>
-      </table>
-    </mat-card-content>
+              <button class="combine-video" type="submit" mat-flat-button color="accent" [disabled]="combineForm.invalid">COMBINE VIDEO(S)</button>
+        </form>
+      </div>
+    </div>
+    <!-- Combine Form - Start -->
 
-    <mat-card-actions>
-      <button class="combine-video" type="submit" mat-flat-button color="accent" [disabled]="combineForm.invalid">COMBINE VIDEO(S)</button>
-    </mat-card-actions>
-  </mat-card>
-</form>
+    <!-- Video Result - Start -->
+    <video class="m-2" [ngClass]="'segmented-video-' + (i + 1)" width="320" height="240" controls *ngFor="let video of segmentedVideoResult; index as i;" >
+      <source [ngClass]="'segmented-video-source-' + (i + 1)" [src]="video.video_url" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <video class="m-2" class="combined-video" width="320" height="240" controls *ngFor="let video of combinedVideoResult" >
+      <source class="combined-video-source" [src]="video.video_url" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <!-- Video Result - End -->
+
+  </section>
+</main>
 
 
-<video [ngClass]="'segmented-video-' + (i + 1)" width="320" height="240" controls *ngFor="let video of segmentedVideoResult; index as i;" >
-  <source [ngClass]="'segmented-video-source-' + (i + 1)" [src]="video.video_url" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-<video class="combined-video" width="320" height="240" controls *ngFor="let video of combinedVideoResult" >
-  <source class="combined-video-source" [src]="video.video_url" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
